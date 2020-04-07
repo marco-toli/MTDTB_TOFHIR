@@ -1,39 +1,30 @@
-
+#include <fstream>
 #include <iostream>
+#include <map>
+#include <vector>
+#include <map>
+#include <string>
+#include <cstdlib>
+#include <stdlib.h>
+#include <utility>
+#include <algorithm>
 #include "TMath.h"
 
 
+bool passBugEventCuts (int iCh, float energy[256], float qfine[256], float tot[256]);
+
+bool neighborsPassBugEventCuts (int chId, bool extended, float energy[256], float qfine[256], float tot[256], int myChList[32]);
+
+double getMyLightFraction(int chId, int neighbor, bool extended, float energy[256], double IC[32], int myChList[32]);
 
 
-double fitBarEffErr(double* x, double* par)
-{
-  //[0] = N
-  //[1] = mean
-  //[2] = sigma
-  //[3] = alpha
-  //[4] = n
-  
-  double t = x[0];
-  
-  double center		= par[0];
-  double width 		= par[1];
-  double baseline	= par[2];
-  double max     	= par[3];
-  double sigma_x   	= par[4];
-  
-  double f;
-  double edge1 = center-width/2;
-  double edge2 = center+width/2;
-  
-  if ( t <= center)
-  {
-      f = baseline + max/2*(erf( (t-edge1) / (sqrt(2)*sigma_x)) + 1);
-  }
-  if (t > center)
-  {
-      f = baseline + max/2*(erf((-t+edge2) / (sqrt(2)*sigma_x)) + 1);
-  }
-  
-  
-  return f;
-}
+double FindSmallestInterval(double mean, double meanErr, double min, double max, std::vector<double>* vals, const double fraction, const bool verbosity);
+double FindSmallestInterval(std::vector<double>* vals, const double fraction, const bool verbosity);
+
+
+double poissonf(double*x,double*par);
+
+
+
+
+double fitBarEffErr(double* x, double* par);
